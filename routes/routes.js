@@ -1,12 +1,22 @@
-'use strict';
-module.exports = function(app) {
-  var ProductAction = require('../controllers/controller');
+const express = require('express');
+const router = express.Router();
+const ProductAction = require('../controllers/ProductController');
+const UserAction = require('../controllers/UserController');
 
-  // Routes
-//    app.route('/login')
-//      .get(ProductAction.login());
-app.get('/login',ProductAction.login);
-app.get('/',ProductAction.home);
+router.get('/login',UserAction.login);
+router.get('/showAllProducts',ProductAction.showAllProducts);
+
+module.exports = router;
+
+// module.exports = function(app) {
+//   let ProductAction = require('../controllers/ProductController');
+//   let UserAction = require('../controllers/UserController');
+  
+//   // Routes
+// //    app.route('/login')
+// //      .get(ProductAction.login());
+// app.get('/login',UserAction.login);
+//app.get('/',ProductAction.home);
 
 //   app.route('/products')
 //     .get(ProductAction.listAllProducts)
@@ -17,4 +27,5 @@ app.get('/',ProductAction.home);
 //     .get(ProductAction.showProductByID)
 //     .put(ProductAction.updateProductByID)
 //     .delete(ProductAction.deleteProductByID);
-};
+
+//};
