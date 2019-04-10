@@ -2,9 +2,10 @@ const express = require('express');
 const router = express.Router();
 const ProductAction = require('../controllers/ProductController');
 const UserAction = require('../controllers/UserController');
+const auth= require('../middlewares/authenticate');
 
 router.get('/login',UserAction.login);
-router.get('/showAllProducts',ProductAction.showAllProducts);
+router.get('/showAllProducts', auth.auth ,ProductAction.showAllProducts);
 
 module.exports = router;
 
