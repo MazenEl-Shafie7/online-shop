@@ -11,7 +11,7 @@ const login = (req, res, next) => {
             next(err);
         } else {
             if (req.body.password === userInfo.password) {
-                const tokenGenerated = jwt.sign({ id: userInfo._id }, config.get('jwtPrivateKey'), { expiresIn: '1h' });
+                const tokenGenerated = jwt.sign({ id: userInfo._id }, config.get('jwtPrivateKey'));
                 userInfo.token = tokenGenerated;
                 res.send(tokenGenerated);
             }

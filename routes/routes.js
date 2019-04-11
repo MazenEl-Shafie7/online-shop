@@ -6,7 +6,7 @@ const auth= require('../middlewares/authenticate');
 
 router.get('/login',UserAction.login);
 router.get('/showAllProducts', auth.auth ,ProductAction.showAllProducts);
-
+router.get('/addToCart',auth.auth,ProductAction.addToCart);
 module.exports = router;
 
 // module.exports = function(app) {
