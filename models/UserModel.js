@@ -10,6 +10,9 @@ var UserSchema = new mongoose.Schema({
     },
     token: {
         type: String
+    },
+    cart:{
+      type: Array
     }
   });
 module.exports = mongoose.model('User', UserSchema, 'users');
