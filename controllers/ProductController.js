@@ -1,4 +1,5 @@
-
+const express = require('express');
+const router = express.Router();
 const Product = require('../models/ProductModel');
 const User = require('../models/UserModel');
 const jwt = require('jsonwebtoken');
@@ -115,7 +116,44 @@ const addToCart = (req, res, next) => {
 
 }
 
-module.exports = { showAllProducts, addToCart };
+
+const purchaseVia2checkout = (req,res,next) => {
+    const sid ="901405890" ;
+    const mode = "2CO";
+    let price =0;
+    let token = req.headers['token'];
+    var base64Url = token.split('.')[1];
+    var decodedValue = JSON.parse(window.atob(base64Url));
+    let userID = decodedValue.id;
+    User.findById(userID,(err , user ) => {
+        user.cart.forEach(product => {
+          price = price + (product.price * product.quantity);
+        });
+    // router.post(`https://sandbox.2checkout.com/checkout/purchase?sid=${sid}&mode=${mode}&li_#_price=${price}`,(req,res,next) => {
+    //   console.log("heeeey i'am 2checkout"); 
+    //   res.send("Heey");         
+    // });
+    res.send(`https://sandbox.2checkout.com/checkout/purchase?sid=${sid}&mode=${mode}&li_0_price=${price}&userID=${userID}`);
+    //res.sendStatus(200);
+    })
+    
+}
+
+const donePurchasing = (req,res,next) => {
+  let userId =req.body.userid;
+  let creditCardProcessed = req.body.credit_card_processed;
+  if(creditCardProcessed === "Y"){
+  //User.findByIdAndUpdate(userId,{cart:[]},(err,resp) => {
+    User.updateOne({ _id: userId }, { $set: { cart: [] } }, (err, result) => {
+    console.log(userId);
+    console.log(result);    
+    res.send("Done purchasing !");
+  });
+  }
+  else { res.send("Error while purchasing!!!");}
+}
+
+module.exports = { showAllProducts , addToCart , purchaseVia2checkout , donePurchasing };
 
 
 
